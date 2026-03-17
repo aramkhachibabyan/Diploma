@@ -782,11 +782,13 @@ height="5.1819444444444445in"}
 $\overrightarrow{x}\  = \ (x_{1}...x_{n}) - ը$ հետևյալ խնդրի բազիսային
 լուծում է\`
 
-$$\left\{ \begin{array}{r}
+$$
+\left\{ \begin{array}{r}
 \overrightarrow{c}\ \overrightarrow{x}\  \rightarrow \ min \\
 A\overrightarrow{x} = \overrightarrow{b} \\
 \overrightarrow{x} \geq \ \overrightarrow{0}
-\end{array}\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ (1)\  \right.\ $$
+\end{array}\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ (1)\  \right.\ 
+$$
 
 որի ոչ զրոյական կոորդինատները թող լինեն ճիշտ այնքան, որքան խնդրում
 մասնակցող հավասարումների թիվն է\`m: Ենթադրենք դրանք համարակալված են
