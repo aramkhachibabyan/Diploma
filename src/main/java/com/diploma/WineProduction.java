@@ -33,8 +33,6 @@ public class WineProduction {
 
     private static final double[] DEF_B = { 30, 28, 32, 26, 60, 55, 70 };
 
-//    private static final double[] DEF_B = { 0, 0, 0, 0, 0, 0, 0 };
-
     private static final double[] DEF_C = { 800, 750, 900, 700, 1000, 1800, 800 };
 
     private static final double[] DEF_F = { 18000, 15000, 50000 };
@@ -73,6 +71,26 @@ public class WineProduction {
             }
         }
 
+        System.out.println();
+        System.out.println("  1 — Քառակուսային ծրագրավորման խնդիր (B ≠ 0)");
+        System.out.println("  2 — Գծային ծրագրավորման խնդիր      (B = 0)");
+        System.out.println();
+        System.out.print("Ընտրեք խնդրի տեսակը (1 կամ 2): ");
+
+        int modelType = 0;
+        while (modelType != 1 && modelType != 2) {
+            String line = scanner.nextLine().trim();
+            if (line.equals("1") || line.equals("2")) {
+                modelType = Integer.parseInt(line);
+            } else {
+                System.out.print("Խնդրում ենք մուտքագրել 1 կամ 2: ");
+            }
+        }
+        boolean isLinear = (modelType == 2);
+        System.out.println(isLinear
+                ? "\n  → Ընտրված է ԳԾԱՅԻՆ խնդիր (B[i] = 0 բոլոր գինիների համար)"
+                : "\n  → Ընտրված է ՔԱՌԱԿՈՒՍԱՅԻՆ խնդիր (B[i] ≠ 0)");
+
         int      nStandard;
         int      nPremium;
         double[] A;
@@ -88,7 +106,7 @@ public class WineProduction {
             nStandard  = DEF_N_STANDARD;
             nPremium   = DEF_N_PREMIUM;
             A          = DEF_A.clone();
-            B          = DEF_B.clone();
+            B          = isLinear ? new double[DEF_A.length] : DEF_B.clone();
             C          = DEF_C.clone();
             F          = DEF_F.clone();
             nResources = DEF_N_RESOURCES;
@@ -123,10 +141,14 @@ public class WineProduction {
             }
 
             B = new double[nWines];
-            System.out.printf("%nՄուտքագրեք B գործակիցները %d գինու համար:%n", nWines);
-            for (int i = 0; i < nWines; i++) {
-                System.out.printf("  B[%d]: ", i + 1);
-                B[i] = Double.parseDouble(scanner.nextLine().trim());
+            if (isLinear) {
+                System.out.println("\nԳծային ռեժիմ. B[i] = 0 բոլոր գինիների համար (ավտոմատ):");
+            } else {
+                System.out.printf("%nՄուտքագրեք B գործակիցները %d գինու համար:%n", nWines);
+                for (int i = 0; i < nWines; i++) {
+                    System.out.printf("  B[%d]: ", i + 1);
+                    B[i] = Double.parseDouble(scanner.nextLine().trim());
+                }
             }
 
             C = new double[nWines];
@@ -172,6 +194,7 @@ public class WineProduction {
 
         System.out.println("\n" + "=".repeat(70));
         System.out.println("ԼՈՒԾՈՒՄ ojAlgo-ի ՄԻՋՈՑՈՎ...");
+        System.out.println("Խնդրի տեսակ: " + (isLinear ? "ԳԾԱՅԻՆ (B = 0)" : "ՔԱՌԱԿՈՒՍԱՅԻՆ (B ≠ 0)"));
         System.out.println("=".repeat(70));
 
         ExpressionsBasedModel model = new ExpressionsBasedModel();
@@ -206,7 +229,6 @@ public class WineProduction {
             bigM.set(X[wineIdx], 1.0);
             bigM.set(Y[j], -M);
         }
-
 
         Optimisation.Result result = model.maximise();
 
